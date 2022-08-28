@@ -17,20 +17,17 @@ public class Twitter{
 
     static async Task Main(string[] args) {
         var appClient = new TwitterClient(CONSUMER_KEY, CONSUMER_SECRET);
+
         var authenticationRequest = await appClient.Auth.RequestAuthenticationUrlAsync();
-
-        Process.Start(new ProcessStartInfo(authenticationRequest.AuthorizationURL) {
-            UseShellExecute = true
-        });
-
+        Process.Start(new ProcessStartInfo(authenticationRequest.AuthorizationURL) { UseShellExecute = true});
         Console.WriteLine("Please enter the code and press enter.");
         var pinCode = Console.ReadLine();
         var userCredentials = await appClient.Auth.RequestCredentialsFromVerifierCodeAsync(pinCode, authenticationRequest);
         var userClient = new TwitterClient(userCredentials);
         var user = await userClient.Users.GetAuthenticatedUserAsync();
-
         Console.WriteLine("Congratulation you have authenticated the user: " + user);
-        var tweet = await userClient.Tweets.PublishTweetAsync("Hello tweetinvi world!");
+
+        var tweet = await userClient.Tweets.PublishTweetAsync("Test");
         Console.WriteLine("You published the tweet : " + tweet);
     }
 }
